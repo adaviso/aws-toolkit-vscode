@@ -6,6 +6,7 @@
 import vscode from 'vscode'
 import { SaveFileRequestMessage, SaveFileResponseMessage, WebviewContext, Command, MessageType } from '../types'
 import path from 'path'
+import { fsCommon } from '../../srcShared/fs'
 
 export async function saveFileMessageHandler(request: SaveFileRequestMessage, context: WebviewContext) {
     let saveFileResponseMessage: SaveFileResponseMessage
@@ -17,7 +18,9 @@ export async function saveFileMessageHandler(request: SaveFileRequestMessage, co
             const contents = Buffer.from(request.fileContents, 'utf8')
             context.fileWatches[filePath] = { fileContents: request.fileContents }
             const uri = vscode.Uri.file(filePath)
-            await vscode.workspace.fs.writeFile(uri, contents)
+            if (!(await fsCommon.existsFile(uri)) || contents !== (await vscode.workspace.fs.readFile(uri))) {
+                await vscode.workspace.fs.writeFile(uri, contents)
+            }
             saveFileResponseMessage = {
                 messageType: MessageType.RESPONSE,
                 command: Command.SAVE_FILE,

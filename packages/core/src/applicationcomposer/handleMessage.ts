@@ -13,12 +13,16 @@ import {
     Message,
     WebviewContext,
     SaveFileRequestMessage,
+    DeleteFilesRequestMessage,
+    UpdateFilesRequestMessage,
     AddFileWatchRequestMessage,
     GenerateResourceRequestMessage,
     MessageType,
     DeployRequestMessage,
 } from './types'
 import { saveFileMessageHandler } from './messageHandlers/saveFileMessageHandler'
+import { deleteFilesMessageHandler } from './messageHandlers/deleteFilesMessageHandler'
+import { updateFilesMessageHandler } from './messageHandlers/updateFilesMessageHandler'
 import { addFileWatchMessageHandler } from './messageHandlers/addFileWatchMessageHandler'
 import { deployMessageHandler } from './messageHandlers/deployMessageHandler'
 import { generateResourceHandler } from './messageHandlers/generateResourceHandler'
@@ -41,6 +45,12 @@ export async function handleMessage(message: unknown, context: WebviewContext) {
                 break
             case Command.SAVE_FILE:
                 void saveFileMessageHandler(message as SaveFileRequestMessage, context)
+                break
+            case Command.DELETE_FILES:
+                void deleteFilesMessageHandler(message as DeleteFilesRequestMessage, context)
+                break
+            case Command.UPDATE_FILES:
+                void updateFilesMessageHandler(message as UpdateFilesRequestMessage, context)
                 break
             case Command.ADD_FILE_WATCH:
                 void addFileWatchMessageHandler(message as AddFileWatchRequestMessage, context)

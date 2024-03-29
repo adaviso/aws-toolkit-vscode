@@ -27,6 +27,8 @@ export enum Command {
     INIT = 'INIT',
     LOAD_FILE = 'LOAD_FILE',
     SAVE_FILE = 'SAVE_FILE',
+    DELETE_FILES = 'DELETE_FILES',
+    UPDATE_FILES = 'UPDATE_FILES',
     ADD_FILE_WATCH = 'ADD_FILE_WATCH',
     DEPLOY = 'DEPLOY',
     FILE_CHANGED = 'FILE_CHANGED',
@@ -78,6 +80,18 @@ export interface SaveFileResponseMessage extends Message {
     failureReason?: string
 }
 
+export interface DeleteFilesResponseMessage extends Message {
+    eventId: string
+    isSuccess: boolean
+    failureReason?: string
+}
+
+export interface UpdateFilesResponseMessage extends Message {
+    eventId: string
+    isSuccess: boolean
+    failureReason?: string
+}
+
 export interface AddFileWatchResponseMessage extends Message {
     eventId: string
     isSuccess: boolean
@@ -115,6 +129,30 @@ export interface SaveFileRequestMessage extends Message {
     eventId: string
     filePath: string
     fileContents: string
+}
+
+export interface FileDetails {
+    path: string
+    hash: string
+    size: string
+}
+export interface DeleteFilesRequestMessage extends Message {
+    eventId: string
+    fileDetails: FileDetails[]
+    options: { keepChangedFiles: boolean; removeEmptyFolders: boolean }
+}
+
+export interface FileSettings {
+    runtime: string
+    sourcePath: string
+}
+
+export interface UpdateFilesRequestMessage extends Message {
+    eventId: string
+    oldFileDetails: FileDetails[]
+    newFileDetails: { path: string; contents: string }[]
+    oldFileSettings: FileSettings
+    newFileSettings: FileSettings
 }
 
 export interface AddFileWatchRequestMessage extends Message {
