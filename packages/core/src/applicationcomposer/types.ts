@@ -133,16 +133,23 @@ export interface SaveFileRequestMessage extends Message {
 
 export interface FileInfo {
     path: string
-    hash: string
-    size: string
+    hash?: string
+    size?: string
     uri?: vscode.Uri
     parentFolderList?: string[]
     contents?: string
 }
+
+export interface FileOptions {
+    keepChangedFiles: boolean
+    removeEmptyFolders: boolean
+    addRuntimeSuffix: boolean
+    runtime: string
+}
 export interface DeleteFilesRequestMessage extends Message {
     eventId: string
     fileInfoList: FileInfo[]
-    options: { keepChangedFiles: boolean; removeEmptyFolders: boolean }
+    options: FileOptions
 }
 
 export interface FileSettings {
@@ -153,7 +160,7 @@ export interface FileSettings {
 export interface UpdateFilesRequestMessage extends Message {
     eventId: string
     oldFileInfoList: FileInfo[]
-    newFileDetails: { path: string; contents: string }[]
+    newFileInfoList: FileInfo[]
     oldFileSettings: FileSettings
     newFileSettings: FileSettings
 }

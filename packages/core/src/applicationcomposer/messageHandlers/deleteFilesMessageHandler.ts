@@ -4,7 +4,7 @@
  */
 
 import { DeleteFilesRequestMessage, DeleteFilesResponseMessage, WebviewContext, Command, MessageType } from '../types'
-import { processFileInfoList } from './deletionUtils/processFileInfoList'
+import { processFileInfoList } from './fileUtils/processFileInfoList'
 
 export async function deleteFilesMessageHandler(request: DeleteFilesRequestMessage, context: WebviewContext) {
     let deleteFilesResponseMessage: DeleteFilesResponseMessage

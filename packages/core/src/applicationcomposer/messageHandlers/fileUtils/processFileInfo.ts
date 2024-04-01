@@ -5,20 +5,19 @@
 
 import vscode from 'vscode'
 
+import { addRuntimeSuffix } from './addRuntimeSuffix'
 import { cleanUpEmptyFolderHierarchy } from './cleanUpEmptyFolderHierarchy'
-import { FileInfo } from '../../types'
+import { FileInfo, FileOptions } from '../../types'
 import { isSafeToDeleteFile } from './isSafeToDeleteFile'
 
-export async function processFileInfo(
-    file: FileInfo,
-    options: { keepChangedFiles: boolean; removeEmptyFolders: boolean },
-    workSpacePath: string
-) {
-    if (!(await isSafeToDeleteFile(file, options.keepChangedFiles))) {
-        return
+export async function processFileInfo(file: FileInfo, options: FileOptions, workSpacePath: string) {
+    if (await isSafeToDeleteFile(file, options.keepChangedFiles)) {
+        await vscode.workspace.fs.delete(file.uri!, { recursive: true })
     }
 
-    await vscode.workspace.fs.delete(file.uri!, { recursive: true })
+    if (options.addRuntimeSuffix) {
+        await addRuntimeSuffix(workSpacePath, file, options.runtime)
+    }
 
     if (!options.removeEmptyFolders) {
         return
