@@ -38,6 +38,16 @@ export async function fromFile(filepath: string): Promise<string> {
     return fsCommon.readFileAsString(filepath)
 }
 
+/**
+ * Creates a folder in the location specified by `folderPathParts`
+ *
+ * Creates parent folders if necessary
+ */
+export async function createFolder(...folderPathParts: string[]) {
+    const folderPath = path.join(...folderPathParts)
+    await fsCommon.mkdir(folderPath)
+}
+
 /** Gets the full path to the Toolkit source root on this machine. */
 export function getProjectDir(): string {
     return path.join(__dirname, '../')
