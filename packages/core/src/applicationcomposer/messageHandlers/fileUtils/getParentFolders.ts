@@ -4,8 +4,14 @@
  */
 
 export async function getParentFolders(path: string) {
-    const parentFolderNames = path.split('/')
-    const parentFolders = []
+    let parentFolderNames: Array<string> = []
+    const parentFolders: Array<string> = []
+
+    const splitPath = path.split('/')
+    if (splitPath.length > 0) {
+        splitPath.pop()
+        parentFolderNames = splitPath
+    }
 
     if (parentFolderNames.length > 0) {
         parentFolders[0] = parentFolderNames[0]

@@ -23,7 +23,5 @@ export async function processFileInfo(file: FileInfo, options: FileOptions, work
         return
     }
 
-    for (let i = file.parentFolderList!.length - 2; i >= 0; i--) {
-        await cleanUpEmptyFolderHierarchy(file.parentFolderList![i], workSpacePath)
-    }
+    await cleanUpEmptyFolderHierarchy(workSpacePath, file.parentFolderList!)
 }
