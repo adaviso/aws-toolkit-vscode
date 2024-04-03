@@ -8,16 +8,17 @@ import assert from 'assert'
 import path from 'path'
 import { FileInfo } from '../../../../applicationcomposer/types'
 import { addRuntimeSuffix } from '../../../../applicationcomposer/messageHandlers/fileUtils/addRuntimeSuffix'
-import { createTestWorkspaceFolder, fromFile, toFile, createFolder } from '../../../testUtil'
+import { createTestWorkspaceFolder, fromFile, toFile } from '../../../testUtil'
 
 describe('file utils', () => {
     describe('addRuntimeSuffix', function () {
         it('appends a suffix to the file path', async function () {
             const workSpaceFolder = await createTestWorkspaceFolder('my-workspace')
-            await createFolder(workSpaceFolder.uri.fsPath, 'src')
-            const filePath = path.join(workSpaceFolder.uri.fsPath, 'src', 'function')
 
-            await toFile('file-contents', filePath)
+            const filePath = path.join(workSpaceFolder.uri.fsPath, 'src', 'function')
+            const fileContents = 'file-contents'
+
+            await toFile(fileContents, filePath)
             const fileUri = vscode.Uri.file(filePath)
 
             const file: FileInfo = {
@@ -25,9 +26,9 @@ describe('file utils', () => {
                 uri: fileUri,
             }
 
-            assert.strictEqual('file-contents', await fromFile(filePath))
+            assert.strictEqual(fileContents, await fromFile(filePath))
             await addRuntimeSuffix(workSpaceFolder.uri.fsPath, file, 'runtime')
-            assert.strictEqual('file-contents', await fromFile(filePath + '-runtime'))
+            assert.strictEqual(fileContents, await fromFile(filePath + '-runtime'))
         })
     })
 })
