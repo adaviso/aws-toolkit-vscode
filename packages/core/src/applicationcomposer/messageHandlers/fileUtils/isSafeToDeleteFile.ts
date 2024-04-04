@@ -12,7 +12,7 @@ export async function isSafeToDeleteFile(file: FileInfo, keepChangedFiles: boole
     }
 
     const fileSavedAfterCreation =
-        (await vscode.workspace.fs.stat(file.uri!)).ctime + 100 < (await vscode.workspace.fs.stat(file.uri!)).mtime
+        (await vscode.workspace.fs.stat(file.uri!)).ctime + 20 < (await vscode.workspace.fs.stat(file.uri!)).mtime
 
     const hasFileCorrectSize = String((await vscode.workspace.fs.stat(file.uri!)).size) === file.size
 

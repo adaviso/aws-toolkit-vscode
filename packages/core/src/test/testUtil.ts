@@ -48,6 +48,16 @@ export async function createFolder(...folderPathParts: string[]) {
     await fsCommon.mkdir(folderPath)
 }
 
+/**
+ * Verifies a folder exists in the location specified by `folderPathParts
+ *
+ * @returns a boolean indicating if the folder exists
+ */
+export function doesFolderExist(...folderPathParts: string[]) {
+    const folderPath = path.join(...folderPathParts)
+    return fs.existsSync(folderPath)
+}
+
 /** Gets the full path to the Toolkit source root on this machine. */
 export function getProjectDir(): string {
     return path.join(__dirname, '../')
